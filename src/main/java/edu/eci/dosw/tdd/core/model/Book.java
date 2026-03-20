@@ -7,4 +7,6 @@ public class Book {
     private String title;
     private String author;
     private int id;
+    private int ejemplares;
+    private int disponibles;
 }
