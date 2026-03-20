@@ -1,4 +1,4 @@
 package edu.eci.dosw.tdd.core.exception;
 
-public class BookNotAvaliableException {
+public class LoanLimitExceededException {
 }

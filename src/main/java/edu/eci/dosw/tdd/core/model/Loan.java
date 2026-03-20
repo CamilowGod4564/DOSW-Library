@@ -1,6 +1,7 @@
 package edu.eci.dosw.tdd.core.model;
 
 import java.time.LocalDate;
+import edu.eci.dosw.tdd.core.model.enums.StatusLoan;
 import lombok.Data;
 
 @Data
