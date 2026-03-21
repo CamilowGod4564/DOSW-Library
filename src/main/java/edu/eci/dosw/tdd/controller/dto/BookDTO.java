@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookDTO {
-    private String id;
+    private int id;
     private String title;
     private String author;
     private Integer ejemplares;

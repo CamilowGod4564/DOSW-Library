@@ -6,6 +6,9 @@ import lombok.Data;
 
 @Data
 public class Loan {
+    private int id;
+    private String bookId;
+    private String userId;
     private Book book;
     private User user;
     private LocalDate loanDate;
