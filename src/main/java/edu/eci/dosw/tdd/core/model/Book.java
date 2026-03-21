@@ -6,7 +6,7 @@ import lombok.Data;
 public class Book {
     private String title;
     private String author;
-    private int id;
+    private String id;
     private int ejemplares;
     private int disponibles;
 }

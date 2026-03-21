@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class Loan {
-    private int id;
+    private String id;
     private String bookId;
     private String userId;
     private Book book;
