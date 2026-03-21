@@ -17,6 +17,14 @@ class UserTest {
         user = new User();
     }
 
+    private User buildFullUser() {
+        User u = new User();
+        u.setId("U-001");
+        u.setName("John Doe");
+        u.setLoansActivos(new ArrayList<>());
+        return u;
+    }
+
     @Test
     void testSetAndGetName() {
         user.setName("John Doe");
@@ -47,70 +55,144 @@ class UserTest {
     }
 
     @Test
-    void testEqualsWithSameValues() {
-        User user1 = new User();
-        user1.setName("John Doe");
-        user1.setId("U-001");
-        user1.setLoansActivos(new ArrayList<>());
-
-        User user2 = new User();
-        user2.setName("John Doe");
-        user2.setId("U-001");
-        user2.setLoansActivos(new ArrayList<>());
-
-        assertEquals(user1, user2);
-    }
-
-    @Test
-    void testEqualsWithDifferentValues() {
-        User user1 = new User();
-        user1.setId("U-001");
-
-        User user2 = new User();
-        user2.setId("U-002");
-
-        assertNotEquals(user1, user2);
-    }
-
-    @Test
-    void testHashCodeConsistency() {
-        User user1 = new User();
-        user1.setName("John Doe");
-        user1.setId("U-001");
-
-        User user2 = new User();
-        user2.setName("John Doe");
-        user2.setId("U-001");
-
-        assertEquals(user1.hashCode(), user2.hashCode());
-    }
-
-    @Test
-    void testToStringContainsFields() {
-        user.setName("John Doe");
-        user.setId("U-001");
-
-        String result = user.toString();
-        assertTrue(result.contains("John Doe"));
-        assertTrue(result.contains("U-001"));
-    }
-
-    @Test
-    void testEqualsWithNull() {
-        user.setId("U-001");
-        assertNotEquals(null, user);
-    }
-
-    @Test
-    void testEqualsWithSelf() {
-        user.setId("U-001");
-        assertEquals(user, user);
-    }
-
-    @Test
     void testSetEmptyLoansList() {
         user.setLoansActivos(new ArrayList<>());
         assertNotNull(user.getLoansActivos());
         assertTrue(user.getLoansActivos().isEmpty());
+    }
+
+    @Test
+    void testToStringContainsFields() {
+        User u = buildFullUser();
+        String result = u.toString();
+        assertTrue(result.contains("U-001"));
+        assertTrue(result.contains("John Doe"));
+    }
+
+    @Test
+    void testEqualsWithSelf() {
+        User u = buildFullUser();
+        assertEquals(u, u);
+    }
+
+    @Test
+    void testEqualsWithNull() {
+        assertNotEquals(null, buildFullUser());
+    }
+
+    @Test
+    void testEqualsWithDifferentClass() {
+        assertNotEquals("not a user", buildFullUser());
+    }
+
+    @Test
+    void testEqualsAllFieldsEqual() {
+        assertEquals(buildFullUser(), buildFullUser());
+    }
+
+    @Test
+    void testEqualsWithDifferentId() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u2.setId("U-999");
+        assertNotEquals(u1, u2);
+    }
+
+    @Test
+    void testEqualsWithNullIdOnOne() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u1.setId(null);
+        assertNotEquals(u1, u2);
+    }
+
+    @Test
+    void testEqualsWithBothIdsNull() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u1.setId(null);
+        u2.setId(null);
+        assertEquals(u1, u2);
+    }
+
+    @Test
+    void testEqualsWithDifferentName() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u2.setName("Jane Doe");
+        assertNotEquals(u1, u2);
+    }
+
+    @Test
+    void testEqualsWithNullName() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u1.setName(null);
+        u2.setName(null);
+        assertEquals(u1, u2);
+    }
+
+    @Test
+    void testEqualsWithDifferentLoansActivos() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        Loan loan = new Loan();
+        loan.setId("L-001");
+        u2.getLoansActivos().add(loan);
+        assertNotEquals(u1, u2);
+    }
+
+    @Test
+    void testEqualsWithNullLoansActivos() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u1.setLoansActivos(null);
+        u2.setLoansActivos(null);
+        assertEquals(u1, u2);
+    }
+
+    @Test
+    void testHashCodeConsistency() {
+        assertEquals(buildFullUser().hashCode(), buildFullUser().hashCode());
+    }
+
+    @Test
+    void testHashCodeDiffersWhenIdDiffers() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u2.setId("U-999");
+        assertNotEquals(u1.hashCode(), u2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithAllNullFields() {
+        assertEquals(new User().hashCode(), new User().hashCode());
+    }
+
+    @Test
+    void testHashCodeWithNullId() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u1.setId(null);
+        u2.setId(null);
+        assertEquals(u1.hashCode(), u2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithNullName() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u1.setName(null);
+        u2.setName(null);
+        assertEquals(u1.hashCode(), u2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithNullLoansActivos() {
+        User u1 = buildFullUser();
+        User u2 = buildFullUser();
+        u1.setLoansActivos(null);
+        u2.setLoansActivos(null);
+        assertEquals(u1.hashCode(), u2.hashCode());
     }
 }

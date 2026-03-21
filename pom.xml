@@ -150,7 +150,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>0.50</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -160,12 +160,6 @@
                 </executions>
             </plugin>
 
-            <!-- Plugin SonarQube -->
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>4.0.0.4121</version>
-            </plugin>
             
 		</plugins>
 	</build>

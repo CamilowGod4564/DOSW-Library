@@ -14,6 +14,10 @@ class UserDTOTest {
         userDTO = new UserDTO();
     }
 
+    private UserDTO buildFullUserDTO() {
+        return new UserDTO("U-001", "John Doe");
+    }
+
     @Test
     void testNoArgsConstructorCreatesInstance() {
         assertNotNull(userDTO);
@@ -21,7 +25,7 @@ class UserDTOTest {
 
     @Test
     void testAllArgsConstructor() {
-        UserDTO dto = new UserDTO("U-001", "John Doe");
+        UserDTO dto = buildFullUserDTO();
         assertEquals("U-001", dto.getId());
         assertEquals("John Doe", dto.getName());
     }
@@ -39,49 +43,114 @@ class UserDTOTest {
     }
 
     @Test
-    void testEqualsWithSameValues() {
-        UserDTO dto1 = new UserDTO("U-001", "John Doe");
-        UserDTO dto2 = new UserDTO("U-001", "John Doe");
-        assertEquals(dto1, dto2);
-    }
-
-    @Test
-    void testEqualsWithDifferentValues() {
-        UserDTO dto1 = new UserDTO("U-001", "John Doe");
-        UserDTO dto2 = new UserDTO("U-002", "Jane Doe");
-        assertNotEquals(dto1, dto2);
-    }
-
-    @Test
-    void testEqualsWithSelf() {
-        UserDTO dto = new UserDTO("U-001", "John Doe");
-        assertEquals(dto, dto);
-    }
-
-    @Test
-    void testEqualsWithNull() {
-        UserDTO dto = new UserDTO("U-001", "John Doe");
-        assertNotEquals(null, dto);
-    }
-
-    @Test
-    void testHashCodeConsistency() {
-        UserDTO dto1 = new UserDTO("U-001", "John Doe");
-        UserDTO dto2 = new UserDTO("U-001", "John Doe");
-        assertEquals(dto1.hashCode(), dto2.hashCode());
+    void testDefaultValuesAreNull() {
+        assertNull(userDTO.getId());
+        assertNull(userDTO.getName());
     }
 
     @Test
     void testToStringContainsFields() {
-        UserDTO dto = new UserDTO("U-001", "John Doe");
-        String result = dto.toString();
+        String result = buildFullUserDTO().toString();
         assertTrue(result.contains("U-001"));
         assertTrue(result.contains("John Doe"));
     }
 
     @Test
-    void testDefaultValuesAreNull() {
-        assertNull(userDTO.getId());
-        assertNull(userDTO.getName());
+    void testEqualsWithSelf() {
+        UserDTO dto = buildFullUserDTO();
+        assertEquals(dto, dto);
+    }
+
+    @Test
+    void testEqualsWithNull() {
+        assertNotEquals(null, buildFullUserDTO());
+    }
+
+    @Test
+    void testEqualsWithDifferentClass() {
+        assertNotEquals("not a dto", buildFullUserDTO());
+    }
+
+    @Test
+    void testEqualsAllFieldsEqual() {
+        assertEquals(buildFullUserDTO(), buildFullUserDTO());
+    }
+
+    @Test
+    void testEqualsWithDifferentId() {
+        UserDTO d1 = buildFullUserDTO();
+        UserDTO d2 = buildFullUserDTO();
+        d2.setId("U-999");
+        assertNotEquals(d1, d2);
+    }
+
+    @Test
+    void testEqualsWithNullIdOnOne() {
+        UserDTO d1 = buildFullUserDTO();
+        UserDTO d2 = buildFullUserDTO();
+        d1.setId(null);
+        assertNotEquals(d1, d2);
+    }
+
+    @Test
+    void testEqualsWithBothIdsNull() {
+        UserDTO d1 = buildFullUserDTO();
+        UserDTO d2 = buildFullUserDTO();
+        d1.setId(null);
+        d2.setId(null);
+        assertEquals(d1, d2);
+    }
+
+    @Test
+    void testEqualsWithDifferentName() {
+        UserDTO d1 = buildFullUserDTO();
+        UserDTO d2 = buildFullUserDTO();
+        d2.setName("Jane Doe");
+        assertNotEquals(d1, d2);
+    }
+
+    @Test
+    void testEqualsWithNullName() {
+        UserDTO d1 = buildFullUserDTO();
+        UserDTO d2 = buildFullUserDTO();
+        d1.setName(null);
+        d2.setName(null);
+        assertEquals(d1, d2);
+    }
+
+    @Test
+    void testHashCodeConsistency() {
+        assertEquals(buildFullUserDTO().hashCode(), buildFullUserDTO().hashCode());
+    }
+
+    @Test
+    void testHashCodeDiffersWhenIdDiffers() {
+        UserDTO d1 = buildFullUserDTO();
+        UserDTO d2 = buildFullUserDTO();
+        d2.setId("U-999");
+        assertNotEquals(d1.hashCode(), d2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithAllNullFields() {
+        assertEquals(new UserDTO().hashCode(), new UserDTO().hashCode());
+    }
+
+    @Test
+    void testHashCodeWithNullId() {
+        UserDTO d1 = buildFullUserDTO();
+        UserDTO d2 = buildFullUserDTO();
+        d1.setId(null);
+        d2.setId(null);
+        assertEquals(d1.hashCode(), d2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithNullName() {
+        UserDTO d1 = buildFullUserDTO();
+        UserDTO d2 = buildFullUserDTO();
+        d1.setName(null);
+        d2.setName(null);
+        assertEquals(d1.hashCode(), d2.hashCode());
     }
 }

@@ -14,6 +14,16 @@ class BookTest {
         book = new Book();
     }
 
+    private Book buildFullBook() {
+        Book b = new Book();
+        b.setId("ISBN-001");
+        b.setTitle("Clean Code");
+        b.setAuthor("Robert C. Martin");
+        b.setEjemplares(5);
+        b.setDisponibles(3);
+        return b;
+    }
+
     @Test
     void testSetAndGetTitle() {
         book.setTitle("Clean Code");
@@ -45,62 +55,7 @@ class BookTest {
     }
 
     @Test
-    void testEqualsWithSameValues() {
-        Book book1 = new Book();
-        book1.setTitle("Clean Code");
-        book1.setAuthor("Robert C. Martin");
-        book1.setId("ISBN-001");
-        book1.setEjemplares(5);
-        book1.setDisponibles(3);
-
-        Book book2 = new Book();
-        book2.setTitle("Clean Code");
-        book2.setAuthor("Robert C. Martin");
-        book2.setId("ISBN-001");
-        book2.setEjemplares(5);
-        book2.setDisponibles(3);
-
-        assertEquals(book1, book2);
-    }
-
-    @Test
-    void testEqualsWithDifferentValues() {
-        Book book1 = new Book();
-        book1.setTitle("Clean Code");
-
-        Book book2 = new Book();
-        book2.setTitle("The Pragmatic Programmer");
-
-        assertNotEquals(book1, book2);
-    }
-
-    @Test
-    void testHashCodeConsistency() {
-        Book book1 = new Book();
-        book1.setTitle("Clean Code");
-        book1.setId("ISBN-001");
-
-        Book book2 = new Book();
-        book2.setTitle("Clean Code");
-        book2.setId("ISBN-001");
-
-        assertEquals(book1.hashCode(), book2.hashCode());
-    }
-
-    @Test
-    void testToStringContainsFields() {
-        book.setTitle("Clean Code");
-        book.setAuthor("Robert C. Martin");
-        book.setId("ISBN-001");
-
-        String result = book.toString();
-        assertTrue(result.contains("Clean Code"));
-        assertTrue(result.contains("Robert C. Martin"));
-        assertTrue(result.contains("ISBN-001"));
-    }
-
-    @Test
-    void testEjemplareDefaultValue() {
+    void testEjemplaresDefaultValue() {
         assertEquals(0, book.getEjemplares());
     }
 
@@ -110,14 +65,152 @@ class BookTest {
     }
 
     @Test
-    void testEqualsWithNull() {
-        book.setTitle("Clean Code");
-        assertNotEquals(null, book);
+    void testToStringContainsFields() {
+        Book b = buildFullBook();
+        String result = b.toString();
+        assertTrue(result.contains("ISBN-001"));
+        assertTrue(result.contains("Clean Code"));
+        assertTrue(result.contains("Robert C. Martin"));
     }
 
     @Test
     void testEqualsWithSelf() {
-        book.setTitle("Clean Code");
-        assertEquals(book, book);
+        Book b = buildFullBook();
+        assertEquals(b, b);
+    }
+
+    @Test
+    void testEqualsWithNull() {
+        assertNotEquals(null, buildFullBook());
+    }
+
+    @Test
+    void testEqualsWithDifferentClass() {
+        assertNotEquals("not a book", buildFullBook());
+    }
+
+    @Test
+    void testEqualsAllFieldsEqual() {
+        assertEquals(buildFullBook(), buildFullBook());
+    }
+
+    @Test
+    void testEqualsWithDifferentId() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b2.setId("ISBN-999");
+        assertNotEquals(b1, b2);
+    }
+
+    @Test
+    void testEqualsWithNullIdOnOne() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b1.setId(null);
+        assertNotEquals(b1, b2);
+    }
+
+    @Test
+    void testEqualsWithBothIdsNull() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b1.setId(null);
+        b2.setId(null);
+        assertEquals(b1, b2);
+    }
+
+    @Test
+    void testEqualsWithDifferentTitle() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b2.setTitle("Refactoring");
+        assertNotEquals(b1, b2);
+    }
+
+    @Test
+    void testEqualsWithDifferentAuthor() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b2.setAuthor("Martin Fowler");
+        assertNotEquals(b1, b2);
+    }
+
+    @Test
+    void testEqualsWithDifferentEjemplares() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b2.setEjemplares(10);
+        assertNotEquals(b1, b2);
+    }
+
+    @Test
+    void testEqualsWithDifferentDisponibles() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b2.setDisponibles(1);
+        assertNotEquals(b1, b2);
+    }
+
+    @Test
+    void testEqualsWithNullTitle() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b1.setTitle(null);
+        b2.setTitle(null);
+        assertEquals(b1, b2);
+    }
+
+    @Test
+    void testEqualsWithNullAuthor() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b1.setAuthor(null);
+        b2.setAuthor(null);
+        assertEquals(b1, b2);
+    }
+
+    @Test
+    void testHashCodeConsistency() {
+        assertEquals(buildFullBook().hashCode(), buildFullBook().hashCode());
+    }
+
+    @Test
+    void testHashCodeDiffersWhenIdDiffers() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b2.setId("ISBN-999");
+        assertNotEquals(b1.hashCode(), b2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithAllNullFields() {
+        assertEquals(new Book().hashCode(), new Book().hashCode());
+    }
+
+    @Test
+    void testHashCodeWithNullId() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b1.setId(null);
+        b2.setId(null);
+        assertEquals(b1.hashCode(), b2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithNullTitle() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b1.setTitle(null);
+        b2.setTitle(null);
+        assertEquals(b1.hashCode(), b2.hashCode());
+    }
+
+    @Test
+    void testHashCodeWithNullAuthor() {
+        Book b1 = buildFullBook();
+        Book b2 = buildFullBook();
+        b1.setAuthor(null);
+        b2.setAuthor(null);
+        assertEquals(b1.hashCode(), b2.hashCode());
     }
 }
