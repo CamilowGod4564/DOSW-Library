@@ -1,0 +1,5 @@
+edu\eci\dosw\tdd\core\model\User.class
+edu\eci\dosw\tdd\core\model\enums\Status.class
+edu\eci\dosw\tdd\DoswLibraryApplication.class
+edu\eci\dosw\tdd\core\model\Book.class
+edu\eci\dosw\tdd\core\model\Loan.class
