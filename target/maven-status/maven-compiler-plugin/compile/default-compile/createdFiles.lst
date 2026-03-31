@@ -1,5 +1,11 @@
-edu\eci\dosw\tdd\core\model\User.class
+edu\eci\dosw\tdd\controller\dto\BookDTO.class
 edu\eci\dosw\tdd\core\model\enums\Status.class
+edu\eci\dosw\tdd\core\service\BookService.class
+edu\eci\dosw\tdd\controller\dto\LoanDTO.class
+edu\eci\dosw\tdd\core\service\LoanService.class
 edu\eci\dosw\tdd\DoswLibraryApplication.class
-edu\eci\dosw\tdd\core\model\Book.class
 edu\eci\dosw\tdd\core\model\Loan.class
+edu\eci\dosw\tdd\core\model\User.class
+edu\eci\dosw\tdd\controller\dto\UserDTO.class
+edu\eci\dosw\tdd\core\service\UserService.class
+edu\eci\dosw\tdd\core\model\Book.class
