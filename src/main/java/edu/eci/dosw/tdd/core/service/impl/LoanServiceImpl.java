@@ -15,7 +15,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public LoanResponseDTO loanDisponibility(LoanResponseDTO loanDTO) {
+    public LoanResponseDTO loanDisponibility(LoanDTO loanDTO) {
         return null;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface LoanService {
     public LoanResponseDTO makeLoan(LoanDTO loanDTO);
-    public LoanResponseDTO loanDisponibility(LoanResponseDTO loanDTO);
+    public LoanResponseDTO loanDisponibility(LoanDTO loanDTO);
     public LoanResponseDTO getLoanById(String id);
     public List<LoanResponseDTO> getAllLoans();
 }
