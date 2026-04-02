@@ -93,6 +93,11 @@
             <version>${openapi.version}</version>
         </dependency>
 
+        <!-- Dependencias para POSTGRESQL  -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
 
     </dependencies>
 
