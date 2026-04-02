@@ -1,0 +1,30 @@
+package edu.eci.dosw.tdd.core.service;
+
+import java.util.Date;
+
+import io.jsonwebtoken.Claims;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Map;
+import java.util.function.Function;
+
+public interface JwtService {
+
+    String extractUsername(String token);
+
+    String getUserName(String token);
+
+    <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
+
+    <T> T getClaim(String token, Function<Claims, T> claimsResolver);
+
+    String generateToken(UserDetails userDetails);
+
+    String generateToken(Map<String, Object> extraClaims, UserDetails userDetails);
+
+    boolean validateToken(String token, UserDetails userDetails);
+
+    boolean isTokenExpired(String token);
+
+    Date extractExpiration(String token);
+}
