@@ -24,7 +24,7 @@ public class LoanController {
         return null;
     }
 
-    @GetMapping
+    @GetMapping("/check")
     public LoanResponseDTO loanDisponibility(LoanDTO loanDTO){
         return null;
     }
