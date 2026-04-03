@@ -4,7 +4,11 @@ package edu.eci.dosw.tdd.controller;
 import edu.eci.dosw.tdd.controller.dto.BookDTO;
 import edu.eci.dosw.tdd.controller.dto.BookResponseDTO;
 import edu.eci.dosw.tdd.core.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +22,13 @@ public class BookController {
     private final BookService bookService;
 
 
+
+
     @PostMapping
-    public BookResponseDTO addBook(BookDTO bookDTO){
-        return null;
+    @Operation(summary = "Agregar un nuevo libro")
+    public ResponseEntity<BookResponseDTO> addBook(@Valid @RequestBody BookDTO bookDTO) {
+        BookResponseDTO response = bookService.addBook(bookDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping

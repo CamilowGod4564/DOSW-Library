@@ -28,40 +28,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 1. Desactivar CSRF (necesario para API stateless)
                 .csrf(csrf -> csrf.disable())
-
-                // 2. Sin sesiones (stateless)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                // 3. Desactivar formulario de login
                 .formLogin(form -> form.disable())
 
-                // 4. Desactivar Basic Auth (importante para que no interfiera)
                 .httpBasic(basic -> basic.disable())
 
-                // 5. Agregar tu filtro JWT
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
-                // 6. Configurar qué endpoints son públicos
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",           // Login, registro
-                                "/swagger-ui/**",         // Swagger UI
-                                "/swagger-ui.html",       // Swagger UI
-                                "/v3/api-docs/**",        // Documentación OpenAPI
-                                "/v3/api-docs"            // Documentación OpenAPI
-                        ).permitAll()                  // ← Estos NO necesitan JWT
-                        .anyRequest().authenticated()  // ← Todo lo demás SÍ necesita JWT
+                                "/api/auth/**",
+                                "/api/books",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
 
-                // 7. Manejo de errores (opcional pero recomendado)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(401);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"error\": \"Token no válido o no proporcionado\"}");
+                            response.getWriter().write("{\"error\": \"Token no valido o no proporcionado\"}");
                         })
                 );
 
