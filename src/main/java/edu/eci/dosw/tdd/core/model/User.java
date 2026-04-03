@@ -28,11 +28,19 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String provider = "LOCAL";
+
+    private String providerId;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Loan> loans = new ArrayList<>();
@@ -40,6 +48,10 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    public boolean isGoogleUser() {
+        return "GOOGLE".equals(provider);
     }
 
     @Override
@@ -71,4 +83,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
