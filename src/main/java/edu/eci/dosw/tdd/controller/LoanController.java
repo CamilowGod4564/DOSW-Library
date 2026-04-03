@@ -9,10 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/loans")
 @RequiredArgsConstructor
 public class LoanController {
@@ -24,7 +25,7 @@ public class LoanController {
         return null;
     }
 
-    @GetMapping
+    @GetMapping("/check")
     public LoanResponseDTO loanDisponibility(LoanDTO loanDTO){
         return null;
     }
