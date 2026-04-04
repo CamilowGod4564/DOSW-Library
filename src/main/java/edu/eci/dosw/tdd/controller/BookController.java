@@ -32,18 +32,33 @@ public class BookController {
     }
 
     @GetMapping
-    public List<BookResponseDTO> getAllBooks(){
-        return null;
+    @Operation(summary = "Obtener todos los libros")
+    public ResponseEntity<List<BookResponseDTO>> getAllBooks() {
+        List<BookResponseDTO> response = bookService.getAllBooks();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public BookResponseDTO getBookById(String bookId){
-        return null;
+    @Operation(summary = "Obtener un libro por su ID")
+    public ResponseEntity<BookResponseDTO> getBookById(@PathVariable Long id) {
+        BookResponseDTO response = bookService.getBookById(id);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public BookResponseDTO updateBook(BookDTO bookDTO){
-        return null;
+    @Operation(summary = "Actualizar un libro existente")
+    public ResponseEntity<BookResponseDTO> updateBook(
+            @PathVariable Long id,
+            @Valid @RequestBody BookDTO bookDTO) {
+        BookResponseDTO response = bookService.updateBook(bookDTO);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar un libro")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

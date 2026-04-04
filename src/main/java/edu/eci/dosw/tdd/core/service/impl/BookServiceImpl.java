@@ -44,8 +44,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookResponseDTO getBookById(String bookId) {
-        return null;
+    public BookResponseDTO getBookById(Long id) {
+        log.info("Buscando libro por ID: {}", id);
+
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado con ID: " + id));
+
+        return bookMapper.toResponse(book);
     }
 
     @Override
@@ -53,6 +58,17 @@ public class BookServiceImpl implements BookService {
     public BookResponseDTO updateBook(BookDTO bookDTO) {
         log.info("Actualizando libro");
         throw new UnsupportedOperationException("Usa updateBook(id, bookDTO) en su lugar");
+    }
+
+    @Override
+    @Transactional
+    public void deleteBook(Long id) {
+        log.info("Eliminando libro con ID: {}", id);
+        if (!bookRepository.existsById(id)) {
+            throw new RuntimeException("Libro no encontrado con ID: " + id);
+        }
+        bookRepository.deleteById(id);
+        log.info("Libro eliminado exitosamente con ID: {}", id);
     }
 
 }
