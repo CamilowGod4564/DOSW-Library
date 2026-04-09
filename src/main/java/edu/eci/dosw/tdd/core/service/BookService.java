@@ -9,6 +9,7 @@ import java.util.List;
 public interface BookService {
     public BookResponseDTO addBook(BookDTO bookDTO);
     public List<BookResponseDTO> getAllBooks();
-    public BookResponseDTO getBookById(String bookId);
+    public BookResponseDTO getBookById(Long bookId);
     public BookResponseDTO updateBook(BookDTO bookDTO);
+    void deleteBook(Long id);
 }
