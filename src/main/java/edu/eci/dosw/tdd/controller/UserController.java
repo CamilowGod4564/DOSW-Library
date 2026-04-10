@@ -3,12 +3,13 @@ package edu.eci.dosw.tdd.controller;
 import edu.eci.dosw.tdd.controller.dto.UserDTO;
 import edu.eci.dosw.tdd.controller.dto.UserResponseDTO;
 import edu.eci.dosw.tdd.core.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,19 +20,25 @@ public class UserController {
 
     private UserService userService;
 
-
     @PostMapping
-    public UserResponseDTO createUser(UserDTO userDTO){
-        return null;
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
+        UserResponseDTO response = userService.createUser(userDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<UserResponseDTO> getAllUsers(){
-        return null;
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            List<UserResponseDTO> users = userService.getAllUsers();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+        }
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO getUserById(String id){
-        return null;
+    public ResponseEntity<?> getUserById(@PathVariable String id) {
+        UserResponseDTO user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 }
