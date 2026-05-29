@@ -1,0 +1,71 @@
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: ${DB_CONTAINER_NAME:-dosw-library-db}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-DBLibraryLocal}
+      POSTGRES_USER: ${POSTGRES_USER:-camilo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-camilo}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-camilo} -d ${POSTGRES_DB:-DBLibraryLocal}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - dosw-network
+
+  springboot-app:
+    build: .
+    container_name: ${APP_CONTAINER_NAME:-dosw-library-app}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      APP_NAME: ${APP_NAME:-DOSW-Library}
+
+      SECURITY_USERNAME: ${SECURITY_USERNAME:-admin}
+      SECURITY_PASSWORD: ${SECURITY_PASSWORD:-1234}
+
+      DB_URL: jdbc:postgresql://database:${POSTGRES_INTERNAL_PORT:-5432}/${POSTGRES_DB:-DBLibraryLocal}
+      DB_USERNAME: ${POSTGRES_USER:-camilo}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-camilo}
+      JPA_DATABASE: ${JPA_DATABASE:-POSTGRESQL}
+      SQL_PLATFORM: ${SQL_PLATFORM:-postgres}
+
+      SHOW_SQL: ${SHOW_SQL:-true}
+      GENERATE_DDL: ${GENERATE_DDL:-true}
+      DDL_AUTO: ${DDL_AUTO:-update}
+
+      # Valor por defecto solo para desarrollo — cambia esto en producción
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+
+      TZ: ${TZ:-America/Bogota}
+      JAVA_OPTS: ${JAVA_OPTS:--Xmx512m -Xms256m}
+
+    depends_on:
+      database:
+        condition: service_healthy
+    # Healthcheck del app (requiere Spring Actuator en el pom.xml)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - dosw-network
+
+volumes:
+  postgres_data:
+    name: ${VOLUME_NAME:-dosw_postgres_data}
+
+networks:
+  dosw-network:
+    name: ${NETWORK_NAME:-dosw-network}
+    driver: bridge
