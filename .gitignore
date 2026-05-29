@@ -57,3 +57,6 @@ build/
 
  # Atom
  .atom/
+
+ # env
+ .env
